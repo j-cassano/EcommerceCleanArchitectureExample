@@ -9,9 +9,9 @@ namespace EcommerceCleanArchitecture.WebClient.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-        private readonly IUseCaseInputPort<ProductListViewModel> _listProductsUseCase;
+        private readonly IListProductsUseCase _listProductsUseCase;
 
-        public HomeController(ILogger<HomeController> logger, IUseCaseInputPort<ProductListViewModel> listProductsUseCase)
+        public HomeController(ILogger<HomeController> logger, IListProductsUseCase listProductsUseCase)
         {
             _logger = logger;
             _listProductsUseCase = listProductsUseCase;

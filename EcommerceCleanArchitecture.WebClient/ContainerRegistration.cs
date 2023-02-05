@@ -1,6 +1,4 @@
-﻿using EcommerceCleanArchitecture.ApplicationDomain.InputPorts;
-using EcommerceCleanArchitecture.ApplicationDomain.Output;
-
+﻿
 namespace EcommerceCleanArchitecture.WebClient
 {
     internal static class ContainerRegistration
@@ -27,11 +25,18 @@ namespace EcommerceCleanArchitecture.WebClient
 
         public static void RegisterUseCases(IServiceCollection serviceCollection)
         {
+            var interfaces = GetInterfaces("EcommerceCleanArchitecture.ApplicationDomain.InputPorts");
             var classImplementations = GetClassImplementations("UseCase", "EcommerceCleanArchitecture.ApplicationDomain.UseCases");
+
+            foreach (var type in interfaces)
+            {
+                var classImplementation = classImplementations.First(x => x.Name == type.Name.Substring(1));
+                serviceCollection.AddTransient(type, classImplementation);
+            }
 
             foreach (var type in classImplementations)
             {
-                serviceCollection.AddTransient(typeof(IUseCaseInputPort<ProductListViewModel>), type);
+                serviceCollection.AddTransient(type);
             }
         }
         public static void RegisterViewModels(IServiceCollection serviceCollection)
@@ -45,36 +50,11 @@ namespace EcommerceCleanArchitecture.WebClient
         }
 
 
-        public static void Register(List<string> conventions, List<string> namespaces, IServiceCollection serviceCollection)
-        {
-            var interfaces = GetInterfaces(conventions, namespaces);
-            var classImplementations = GetClassImplementations(conventions, namespaces);
-
-            foreach (var type in interfaces)
-            {
-                var classImplementation = classImplementations.First(x => x.Name == type.Name.Substring(1));
-                serviceCollection.AddSingleton(type, classImplementation);
-            }
-
-            foreach (var type in classImplementations)
-            {
-                serviceCollection.AddSingleton(type);
-            }
-        }
-
         public static bool EndsWith(this string value, IEnumerable<String> values)
         {
             return values.Any(value.EndsWith);
         }
 
-        public static IEnumerable<Type> GetInterfaces(List<string> conventions, List<string> namespaces)
-        {
-            return AppDomain.CurrentDomain.GetAssemblies()
-                            .SelectMany(t => t.GetTypes())
-                            .Where(t => t.IsInterface
-                                && t.Name.EndsWith(conventions)
-                                && namespaces.Contains(t.Namespace));
-        }
         public static IEnumerable<Type> GetInterfaces(string namespaceToSearch)
         {
             return AppDomain.CurrentDomain.GetAssemblies()
@@ -84,15 +64,7 @@ namespace EcommerceCleanArchitecture.WebClient
         }
 
 
-        public static IEnumerable<Type> GetClassImplementations(List<string> conventions, List<string> namespaces)
-        {
-            return AppDomain.CurrentDomain.GetAssemblies()
-                    .SelectMany(t => t.GetTypes())
-                    .Where(t => t.IsClass
-                        && t.Name.EndsWith(conventions)
-                        && namespaces.Contains(t.Namespace));
-        }
-
+  
         public static IEnumerable<Type> GetClassImplementations(string namespaceToSearch)
         {
             return AppDomain.CurrentDomain.GetAssemblies()

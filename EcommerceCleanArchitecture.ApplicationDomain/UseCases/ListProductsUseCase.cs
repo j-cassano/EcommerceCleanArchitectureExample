@@ -3,7 +3,7 @@ using EcommerceCleanArchitecture.ApplicationDomain.Output;
 
 namespace EcommerceCleanArchitecture.ApplicationDomain.UseCases
 {
-    internal class ListProductsUseCase : IUseCaseInputPort<ProductListViewModel>
+    internal class ListProductsUseCase : IListProductsUseCase
     {
         public async Task<ProductListViewModel> ExecuteAsync()
         {

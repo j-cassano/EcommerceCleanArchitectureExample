@@ -14,7 +14,7 @@ namespace EcommerceCleanArchitecture.WebClient.UnitTests
         {
             var automocker = new AutoMocker();
             var homeController = automocker.CreateInstance<HomeController>();
-            var listProductsUseCase = automocker.GetMock<IUseCaseInputPort<ProductListViewModel>>();
+            var listProductsUseCase = automocker.GetMock<IListProductsUseCase>();
 
             await homeController.Index();
 
@@ -27,7 +27,7 @@ namespace EcommerceCleanArchitecture.WebClient.UnitTests
         {
             var automocker = new AutoMocker();
             var homeController = automocker.CreateInstance<HomeController>();
-            var listProductsUseCase = automocker.GetMock<IUseCaseInputPort<ProductListViewModel>>();
+            var listProductsUseCase = automocker.GetMock<IListProductsUseCase>();
             var testViewModel = CreateTestProductViewModel();
             listProductsUseCase.Setup(x => x.ExecuteAsync()).ReturnsAsync(testViewModel);
             var expectedProductCount = 0;
