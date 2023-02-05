@@ -20,7 +20,7 @@ namespace EcommerceCleanArchitecture.WebClient.Controllers
         public async Task<IActionResult> Index()
         {
             var productViewModel = await _listProductsUseCase.ExecuteAsync();
-            return View();
+            return View(productViewModel);
         }
 
         public IActionResult Privacy()

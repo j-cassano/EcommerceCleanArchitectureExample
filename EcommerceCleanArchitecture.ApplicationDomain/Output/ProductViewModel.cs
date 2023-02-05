@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace EcommerceCleanArchitecture.ApplicationDomain.Output
 {
-    public class ProductListViewModel
+    public class ProductViewModel
     {
-        public List<ProductViewModel> Products { get; set;}
+        public string Name { get; set; }
     }
 }
